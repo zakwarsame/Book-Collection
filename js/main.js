@@ -50,6 +50,10 @@ class UI {
         }
     }
 
+    static showAlert(){
+        
+    }
+
     static clearFields(){
         document.querySelector('#title').value = '';
         document.querySelector('#author').value = '';
@@ -72,7 +76,14 @@ const submitBook = e => {
     const author = document.querySelector('#author').value;
     const isbn = document.querySelector('#isbn').value;
 
-    // Instantiate book
+    // Validate
+
+    if(title === '' || author === '' || isbn === ''){
+        alert('Please fill in all fields')
+
+    } else{
+
+    // Instantiate book}
     const book = new Book(title, author, isbn);
 
     // Add book to UI
@@ -81,6 +92,7 @@ const submitBook = e => {
     // Clear Fields
     UI.clearFields();
 
+    }
 }
 document.querySelector('#book-form').addEventListener('submit', submitBook)
 
