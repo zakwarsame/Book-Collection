@@ -12,20 +12,7 @@ class Book {
 
 class UI {
     static displayBooks(){
-        const StoreBooks = [
-            {
-                title: 'Book One',
-                author: 'John Doe',
-                isbn: '3434434'
-            },
-            {
-                title: 'Book Two',
-                author: 'Jane Doe',
-                isbn: '45545'
-            }
-        ];
-
-        const books = StoreBooks;
+        const books = Store.getBooks();
 
         books.forEach(book => UI.addBookToList(book))
     }
@@ -72,6 +59,39 @@ class UI {
 
 //Store Class: For Storage
 
+class Store {
+    static getBooks(){
+        let books;
+        if (localStorage.getItem('books')=== null){
+            books = []
+        }
+        else {
+            books = JSON.parse(localStorage.getItem('books'));
+        }
+
+        return books;
+    }
+
+    static addBook(book){
+        const books = Store.getBooks();
+        books.push(books);
+        localStorage.setItem('books', JSON.stringify(books))
+    }
+    static removeBook(isbn){
+        const books = Store.getBooks();
+
+        books.forEach((book, index)=> {
+            if (book.isbn === isbn){
+                books.splice(index, 1);
+            }
+        });
+
+        localStorage.setItem('books', JSON.stringify(books))
+    }
+
+    
+}
+
 // Event: Display Books
 
 document.addEventListener('DOMContentLoaded', UI.displayBooks)
@@ -98,6 +118,8 @@ const submitBook = e => {
     // Add book to UI
     UI.addBookToList(book);
 
+    // Add Book to Store
+
     //show success message
 
     UI.showAlert('Book successfully added', 'success')
@@ -112,6 +134,6 @@ document.querySelector('#book-form').addEventListener('submit', submitBook)
 
 const removeBook = e => {
     UI.deleteBook(e.target);
-    UI.showAlert('Book successfully deleted', 'info')
+    UI.showAlert('Book deleted', 'success')
 }
 document.querySelector('#book-list').addEventListener('click', removeBook)
