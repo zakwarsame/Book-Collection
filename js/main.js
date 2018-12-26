@@ -11,11 +11,11 @@ class Book {
 // UI Class: For UI tasks
 
 class UI {
-    static displayBooks(){
+    static displayBooks() {
         const books = Store.getBooks();
-
-        books.forEach(book => UI.addBookToList(book))
-    }
+    
+        books.forEach((book) => UI.addBookToList(book));
+      }
 
     static addBookToList(book) {
         const list = document.querySelector('#book-list');
@@ -57,39 +57,36 @@ class UI {
     }
 }
 
-//Store Class: For Storage
-
+// Store Class: Handles Storage
 class Store {
-    static getBooks(){
-        let books;
-        if (localStorage.getItem('books')=== null){
-            books = []
-        }
-        else {
-            books = JSON.parse(localStorage.getItem('books'));
-        }
-
-        return books;
+  static getBooks() {
+    let books;
+    if(localStorage.getItem('books') === null) {
+      books = [];
+    } else {
+      books = JSON.parse(localStorage.getItem('books'));
     }
 
-    static addBook(book){
-        const books = Store.getBooks();
-        books.push(books);
-        localStorage.setItem('books', JSON.stringify(books))
-    }
-    static removeBook(isbn){
-        const books = Store.getBooks();
+    return books;
+  }
 
-        books.forEach((book, index)=> {
-            if (book.isbn === isbn){
-                books.splice(index, 1);
-            }
-        });
+  static addBook(book) {
+    const books = Store.getBooks();
+    books.push(book);
+    localStorage.setItem('books', JSON.stringify(books));
+  }
 
-        localStorage.setItem('books', JSON.stringify(books))
-    }
+  static removeBook(isbn) {
+    const books = Store.getBooks();
 
-    
+    books.forEach((book, index) => {
+      if(book.isbn === isbn) {
+        books.splice(index, 1);
+      }
+    });
+
+    localStorage.setItem('books', JSON.stringify(books));
+  }
 }
 
 // Event: Display Books
@@ -119,10 +116,12 @@ const submitBook = e => {
     UI.addBookToList(book);
 
     // Add Book to Store
+    Store.addBook(book);
+
 
     //show success message
-
-    UI.showAlert('Book successfully added', 'success')
+    UI.showAlert('Book successfully added', 'success');
+    
     // Clear Fields
     UI.clearFields();
 
